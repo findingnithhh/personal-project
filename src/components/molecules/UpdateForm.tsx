@@ -1,6 +1,11 @@
-import React, { useState, useRef, FormEventHandler, ChangeEvent } from "react";
+import React, {
+  useState,
+  useRef,
+  FormEventHandler,
+  ChangeEvent,
+  useEffect,
+} from "react";
 import { InputFile, InputText, Button } from "../atoms";
-import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { UserValidateSchema } from "@/validation/UserValidateSchema";
 
@@ -11,40 +16,26 @@ interface User {
   image: string;
 }
 
-interface AddFormProps {
-  user: User[];
-  setUser: React.Dispatch<React.SetStateAction<User[]>>;
+interface UpdateFormProps {
+  user: User;
+  updateUser: (updatedUser: User) => void;
 }
 
-const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
-  const [enterValue, setEnterValue] = useState<User>({
-    id: "",
-    name: "",
-    email: "",
-    image: "",
-  });
+const UpdateForm: React.FC<UpdateFormProps> = ({ user, updateUser }) => {
+  const [updateValue, setUpdateValue] = useState<User>({ ...user });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const inputFileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setUpdateValue({ ...user }); 
+  }, [user]);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      await UserValidateSchema.validate(enterValue, { abortEarly: false });
-      const newUser = { ...enterValue, id: uuidv4() };
-      console.log(newUser);
-      setUser((prevUsers) => [...prevUsers, newUser]);
-      setEnterValue({
-        id: "",
-        name: "",
-        email: "",
-        image: "",
-      });
-      
-      e.currentTarget.reset();
-      if (inputFileRef.current) {
-        inputFileRef.current.value = "";
-      }
-      setErrors({}); // Clear errors after successful submission
+      await UserValidateSchema.validate(updateValue, { abortEarly: false });
+      updateUser({ ...updateValue }); 
+      setErrors({}); 
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const newErrors: { [key: string]: string } = {};
@@ -54,14 +45,13 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
           }
         });
         setErrors(newErrors);
-       
       }
     }
   };
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setEnterValue({ ...enterValue, [name]: value });
+    setUpdateValue({ ...updateValue, [name]: value });
     if (errors[name]) {
       setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
     }
@@ -71,7 +61,7 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
     const imageFile = event.target.files && event.target.files[0];
     if (imageFile) {
       const imageUrl = URL.createObjectURL(imageFile);
-      setEnterValue({ ...enterValue, image: imageUrl });
+      setUpdateValue({ ...updateValue, image: imageUrl });
     }
   };
 
@@ -84,7 +74,7 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
             placeholder="Username"
             type="text"
             name="name"
-            value={enterValue.name}
+            value={updateValue.name}
             onChange={onChangeInput}
           />
           {errors.name && (
@@ -97,7 +87,7 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
             placeholder="example@gmail.com"
             type="email"
             name="email"
-            value={enterValue.email}
+            value={updateValue.email}
             onChange={onChangeInput}
           />
           {errors.email && (
@@ -116,7 +106,7 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
           {errors.image && <p style={{ color: "red" }}>{errors.image}</p>}
           <div className="flex flex-col">
             <Button type="submit" className="mt-2" size="md" color="primary">
-              Create
+              Update
             </Button>
           </div>
         </div>
@@ -125,4 +115,4 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
   );
 };
 
-export { AddForm };
+export { UpdateForm };
