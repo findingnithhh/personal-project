@@ -6,8 +6,6 @@ import {
   InputText,
   InputFile,
 } from "@/components/atoms";
-import { AddForm } from "@/components/molecules";
-
 interface ModalProps {
   children: ReactNode;
 }
