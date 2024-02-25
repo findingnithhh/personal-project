@@ -1,2 +1,3 @@
 import { AddForm } from "./AddForm";
-export {AddForm}
+import { CardList } from "./Card";
+export {AddForm, CardList}

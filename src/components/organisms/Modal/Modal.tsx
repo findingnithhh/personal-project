@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative z-50">
         <FloatingButton
           position="bottom-left"
           className="text-white bg-neutral"
@@ -38,7 +38,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
           </svg>
         </FloatingButton>
         {showModal && (
-          <div className="absolute inset-0 bg-black bg-opacity-70 flex justify-center items-center h-screen">
+          <div className="absolute inset-0 bg-black bg-opacity-90 flex justify-center items-center h-screen">
             <div className="w-[800px] h-[600px] bg-[#1D232A] rounded-2xl flex justify-center items-center">
               {children}
               <div className="fixed top-44 right-[560px]">

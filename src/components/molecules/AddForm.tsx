@@ -23,10 +23,17 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
     email: "",
     image: "",
   });
+  const [nameError, setNameError] = useState<string>("");
   const inputFileRef = useRef<HTMLInputElement>(null); // Correct type for useRef
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    if (!enterValue.name.trim()) {
+      setNameError("Please enter a username.");
+      return;
+    } else {
+      setNameError(""); // Clear the error when the input is valid
+    }
     const newUser = { ...enterValue, id: uuidv4() };
     console.log(newUser);
     setUser((prevUsers) => [...prevUsers, newUser]);
@@ -69,6 +76,7 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
             value={enterValue.name}
             onChange={onChangeInput}
           />
+          {nameError && <p style={{ color: "red" }}>{nameError}</p>}
           <InputText
             size="md"
             placeholder="example@gmail.com"
@@ -77,6 +85,7 @@ const AddForm: React.FC<AddFormProps> = ({ user, setUser }) => {
             value={enterValue.email}
             onChange={onChangeInput}
           />
+
           <InputFile
             size="md"
             type="file"
