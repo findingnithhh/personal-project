@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
       <div className="relative z-50">
         <FloatingButton
           position="bottom-left"
-          className="text-white bg-neutral"
+          className="text-white bg-neutral "
           onClick={() => setShowModal(true)}
         >
           <svg

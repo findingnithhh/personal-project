@@ -13,12 +13,14 @@ interface ButtonProps {
     | "warning"
     | "error";
   type?: "button" | "submit" | "reset";
+  rounded?: "none" | "base" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 const Button: React.FC<ButtonProps> = ({
   children,
   className,
   size = "md",
+  rounded = "base",
   color = "neutral",
   type = "button",
   onClick,
@@ -39,6 +41,29 @@ const Button: React.FC<ButtonProps> = ({
         return "px-5 py-2.5 text-sm text-center text-gray-100 rounded-md";
     }
   };
+
+  const ButtonRounded = (rounded: string) => {
+    switch(rounded) {
+      case "base":
+        return "rounded";
+      case "sm":
+        return "rounded-sm";
+      case "md":
+        return "rounded-md";
+      case "lg":
+        return "rounded-lg";
+      case "xl":
+        return "rounded-xl";
+      case "2xl":
+        return "rounded-2xl";
+      case "3xl":
+        return "rounded-3xl";
+      case "full":
+        return "rounded-full";
+      default: 
+        return "rounded-none"
+    }
+  }
 
   const ButtonColor = (color: string) => {
     switch (color) {
@@ -61,14 +86,16 @@ const Button: React.FC<ButtonProps> = ({
     }
   };
 
+
   const getButtonSize = ButtonSize(size);
   const getButtonColor = ButtonColor(color);
+  const getButtonRounded = ButtonRounded(rounded);
   return (
     <>
       <button
         onClick={onClick}
         type={type}
-        className={`${getButtonColor} ${getButtonSize} ${className}`}
+        className={`${getButtonRounded} ${getButtonColor} ${getButtonSize} ${className}`}
       >
         {children}
       </button>
