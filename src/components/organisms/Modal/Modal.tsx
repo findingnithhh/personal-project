@@ -37,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
         </FloatingButton>
         {showModal && (
           <div className="absolute inset-0 bg-black bg-opacity-90 flex justify-center items-center h-screen">
-            <div className="w-[800px] h-[600px] bg-[#1D232A] rounded-2xl flex justify-center items-center">
+            <div className="w-[800px] h-[600px] bg-[#1D232A] rounded-2xl flex justify-center items-center flex-col">
               {children}
               <div className="fixed top-44 right-[560px]">
                 <button
@@ -60,6 +60,16 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
                   </svg>
                 </button>
               </div>
+              {/* <div>
+                <Button
+                  onClick={() => setShowModal(false)}
+                  className="mt-2 w-[400px]"
+                  size="md"
+                  color="primary"
+                >
+                  Create
+                </Button>
+              </div> */}
             </div>
           </div>
         )}
